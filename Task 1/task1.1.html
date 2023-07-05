@@ -1,0 +1,66 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Part-1</title>
+    <style>
+      .all {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50vh;
+      }
+      .msg_box {
+        margin-top: 3%;
+        font-size: larger;
+        border-color: aqua;
+        padding: 0.7rem;
+        border-radius: solid red 5px;
+        width: fit-content;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="all">
+      <h4>Enter a Number : <input type="text" id="num1" /></h4>
+      <h4>Enter a Number : <input type="text" id="num2" /></h4>
+      <button onclick="performOperation('+')">Add</button>
+      <button onclick="performOperation('-')">Subtract</button>
+      <button onclick="performOperation('*')">Multiply</button>
+      <button onclick="performOperation('/')">Divide</button>
+      <br />
+      <span id="msg_box"><label id="msg"></label></span>
+    </div>
+    <script>
+      function performOperation(operator) {
+        var num1 = parseFloat(document.getElementById("num1").value);
+        var num2 = parseFloat(document.getElementById("num2").value);
+
+        if (isNaN(num1) || isNaN(num2)) {
+          document.getElementById("msg").innerHTML =
+            "* Please enter valid numbers";
+          document.getElementById("msg").style.color = "red";
+        } else {
+          var result;
+          switch (operator) {
+            case "+":
+              result = num1 + num2;
+              break;
+            case "-":
+              result = num1 - num2;
+              break;
+            case "*":
+              result = num1 * num2;
+              break;
+            case "/":
+              result = num1 / num2;
+              break;
+          }
+          document.getElementById("msg").innerHTML = "Result: " + result;
+          document.getElementById("msg").style.color = "black";
+        }
+      }
+    </script>
+  </body>
+</html>
