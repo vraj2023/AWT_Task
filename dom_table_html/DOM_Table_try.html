@@ -1,68 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Table</title>
     <style type="text/css">
-        body{
+        body {
             font-family: Arial;
             font-size: 10pt;
         }
-        table{
+
+        table {
             border: 1px solid #ccc;
             border-collapse: collapse;
         }
-        table th{
+
+        table th {
             background-color: #F7F7F7;
             color: #333;
             font-weight: bold;
         }
-        table th, table td{
+
+        table th,
+        table td {
             padding: 5px;
             border-color: #ccc;
         }
-		input[type="button"]{
-		background-color: #08F;
-		color:#fff;}
-        form{
+
+        input[type="button"] {
             background-color: #08F;
-            padding: 50px;
+            color: #fff;
+        }
+
+        form {
+            /* background-color: #08F; */
+            padding: 10px;
+            display: flex;
         }
     </style>
 </head>
+
 <body>
     <script type="text/javascript">
-        window.onload = function () {
-            //Build an array containing Customer records.
-            var customers = new Array();
-            customers.push(["Mrugendra", "India"]);  //adds a new element to an array (at the end):
-            customers.push(["Nikunj", "USA"]);
-            customers.push(["Chintan", "France"]);
-            customers.push(["Martin", "Russia"]);
-			
-			//customers.unshift(["Martin", "Russia"]); //adds a new element to an array (at the beginning)
-			//customers.pop(); //method removes the last array element
-			//customers.shift();//removes the first element from an array:
-			
+        // window.onload = function () {
+        //     //Build an array containing Customer records.
+        //     var customers = new Array();
+        //     customers.push(["Mrugendra", "India"]);  //adds a new element to an array (at the end):
+        //     customers.push(["Nikunj", "USA"]);
+        //     customers.push(["Chintan", "France"]);
+        //     customers.push(["Martin", "Russia"]);
 
-            //Add the data rows.
-            for (var i = 0; i < customers.length; i++) {
-                AddRow(customers[i][0], customers[i][1]);//AddRow("Mrugendra", "India")
+        // 	//customers.unshift(["Martin", "Russia"]); //adds a new element to an array (at the beginning)
+        // 	//customers.pop(); //method removes the last array element
+        // 	//customers.shift();//removes the first element from an array:
+
+
+        //     //Add the data rows.
+        //     for (var i = 0; i < customers.length; i++) {
+        //         AddRow(customers[i][0], customers[i][1]);//AddRow("Mrugendra", "India")
+        //     }
+        // };
+        var flag = false;
+        function generate() {
+            if (!flag) {
+                document.body.removeEventListener('click', generate);
+
+                var table = document.createElement("Table");
+
+                var customers = new Array();
+                customers.push(["Name", "Country"]);
+                customers.push(["Mrugendra", "India"]);  //adds a new element to an array (at the end):
+                customers.push(["Nikunj", "USA"]);
+                customers.push(["Chintan", "France"]);
+                customers.push(["Martin", "Russia"]);
+
+                var collen = customers[0].length;
+
+                var row = table.insertRow();
+                for (var i = 0; i < collen; i++) {
+                    var head = document.createElement("TH");
+                    head.innerHTML = customers[0][i];
+                    row.appendChild(head);
+                }
+
+                for (var i = 1; i < customers.length; i++) {
+                    row = table.insertRow();
+                    for (var j = 0; j < collen+1; j++) {
+                        var col = row.insertCell();
+                        if(j<2){col.innerHTML = customers[i][j];}
+                        if(j==2)
+                        {
+                            
+                            var input = document.createElement("input");
+                            input.setAttribute("value","Edit");
+                            input.setAttribute("type","button");
+                            input.setAttribute("onclick","edit()");
+                            col.appendChild(input);
+                        }
+                    }
+                }
+                var content = document.querySelector(".content");
+                content.appendChild(table);
+                flag = true;
             }
-        };
 
-        function Add() {
-            var txtName = document.getElementById("txtName");
-            var txtCountry = document.getElementById("txtCountry");
-            AddRow(txtName.value, txtCountry.value);
-            txtName.value = "";
-            txtCountry.value = "";
-        };
+        }
 
-        function add(){
-            var txtName = document.getElementById("name");
-            var txtCountry = document.getElementById("country");
+        // function Add() {
+        //     var txtName = document.getElementById("txtName");
+        //     var txtCountry = document.getElementById("txtCountry");
+        //     AddRow(txtName.value, txtCountry.value);
+        //     txtName.value = "";
+        //     txtCountry.value = "";
+        // };
+
+        function add() {
+            var txtName = document.getElementById(document.body,"name");
+            var txtCountry = document.querySelector("#country");
             console.log(txtCountry);
             AddRow(txtName.value, txtCountry.value);
             txtName.value = "";
@@ -72,7 +127,7 @@
         function Remove(button) {
             //Determine the reference of the Row using the Button.
             var row = button.parentNode.parentNode;
-			var name = row.getElementsByTagName("TD")[0].innerHTML;
+            var name = row.getElementsByTagName("TD")[0].innerHTML;
             if (confirm("Do you want to delete: " + name)) {
 
                 //Get the reference of the Table.
@@ -85,8 +140,8 @@
 
         function AddRow(name, country) {
             //Get the reference of the Table's TBODY element.
-            var tBody = document.getElementById("tblCustomers").getElementsByTagName("TBODY")[0];
-
+            // var tBody = document.getElementById("tblCustomers").getElementsByTagName("TBODY")[0];
+            var tBody = document.createElement("Table"); 
             //Add Row.
             row = tBody.insertRow(-1);
 
@@ -100,39 +155,47 @@
 
             //Add Button cell.
             cell = row.insertCell(-1);
-            var btnRemove = document.createElement("INPUT");
-            btnRemove.type = "button";
-            btnRemove.value = "Remove";
-            btnRemove.setAttribute("onclick", "Remove(this);");
-            cell.appendChild(btnRemove);
+            var edit = document.createElement("INPUT");
+            edit.type = "button";
+            edit.value = "Edit";
+            edit.setAttribute("onclick", "edit(this);");
+            cell.appendChild(edit);
         }
     </script>
 
-<table id="tblCustomers" cellpadding="0" cellspacing="0" border="1">
-    <form>
-        <div class="form">
-            <input name="name" id="name" type="text" placeholder="Enter your name">
-            <input name="country" id="country" type="text" placeholder="Enter your Country">
-            <input type="button" value="Submit"onclick="add()">
-        </div>
-    </form>
+    
+
+    <input type="button" onclick="generate()" value="Generate">
+    <div class="content">
+        <form>
+            <div class="form">
+                <input name="name" id="name" type="text" placeholder="Enter your name">
+                <input name="country" id="country" type="text" placeholder="Enter your Country">
+                <input type="button" value="Submit" onclick="add()">
+            </div>
+        </form>
+    </div>
+
+    <!-- <table id="tblCustomers" cellpadding="0" cellspacing="0" border="1">
+   
     
     <thead>
         <tr>
             <th>Name</th>
             <th>Country</th>
-            <th></th>
+            <th>Button</th>
         </tr>
     </thead>
     <tbody>
     </tbody>
-    <!-- <tfoot>
+    <tfoot>
         <tr>
             <td><input type="text" id="txtName" /></td>
             <td><input type="text" id="txtCountry" /></td>
             <td><input type="button" onclick="Add()" value="Add" /></td>
         </tr>
-    </tfoot> -->
-</table>
+    </tfoot>
+</table> -->
 </body>
+
 </html>
